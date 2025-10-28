@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ page.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <!-- <div class="nav-name"><span class="nav-logo">KBN</span></div> -->
+      <nav class="nav-links">
+        <a href="/">About</a>
+        <a href="/publications.html">Publications</a>
+        <a href="/research.html">Research Questions</a>
+        <a href="" target="_blank">CV</a>
+        <a href="/notes.html">Notes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="mailto:dmrc@umich.edu">Email</a> |
+      <a href="https://github.com/dcherenson" target="_blank">GitHub</a> |
+      <a href="https://scholar.google.com/citations?user=a87kck4AAAAJ&hl=en" target="_blank">Google Scholar</a> |
+      <a href="https://www.linkedin.com/in/dcherenson/" target="_blank">LinkedIn</a>
+    </div>
+    <div class="footer-credit">
+      © {{ site.time | date: "%Y" }} Daniel Cherenson &nbsp; 
+    </div>
+  </footer>
+</body>
+</html>

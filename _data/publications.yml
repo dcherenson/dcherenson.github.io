@@ -1,0 +1,22 @@
+- year: 2025
+  title: "Adaptive Control Allocation for Underactuated Time-Scale Separated Non-Affine Systems"
+  category: conferences
+  image: "/pics/vtol_animation.gif"
+  venue: 'submitted and under review' # IEEE Control Systems Letters (L-CSS)
+  authors: "<strong>Daniel M. Cherenson</strong> and Dimitra Panagou"
+  first_coauthors: false
+  links:
+    pdf: 'https://arxiv.org/pdf/2510.07507'
+    code: 'https://github.com/dcherenson/adaptive-control-underactuated'
+
+- year: 2025
+  title: "Autonomy Architectures for Safe Planning in Unknown Environments Under Budget Constraints"
+  category: conferences
+  image: "/pics/budget.gif"
+  venue: "submitted and under review"
+  authors: "<strong>Daniel M. Cherenson</strong>, Devansh R. Agrawal, and Dimitra Panagou"
+  first_coauthors: false
+  links:
+    pdf: "https://arxiv.org/pdf/2510.07507"
+    code: "https://github.com/dcherenson/budget-constrained-planning"
+
