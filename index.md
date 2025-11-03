@@ -46,7 +46,7 @@ title: "Home"
       <a href="https://dasc-lab.github.io/" target="_blank">DASC Lab</a>, part of the 
       <a href="https://robotics.umich.edu/" target="_blank">Department of Robotics</a> at the University of Michigan, Ann Arbor. 
       I am advised by <a href="https://websites.umich.edu/~dpanagou/" target="_blank">Professor Dimitra Panagou</a>. 
-      My research interests are in safe anf efficient planning and control under uncertainty with applications to aerial robotic systems.
+      My research interests are safe and efficient planning and control under uncertainty with applications to aerial robotic systems.
       </p>
 
       <p>
