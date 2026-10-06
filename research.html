@@ -6,33 +6,194 @@ title: Research
 
 <!-- ======= CONTENT BELOW THE HERO ======= -->
 <div class="content-wrap">
-  <h2>Research questions I have been working on</h2>
+  <h2>Research areas</h2>
 
-  <!-- CATEGORY 1 -->
-  <div class="research-category">
-    <h3>Budget-Constrained Safety under Uncertainty</h3>
-    <ul>
-      <li>
-        <a href="https://arxiv.org/pdf/2504.03001" target="_blank" class="paper-link">
-          How to plan trajectories in unknown environments while guaranteeing safety and budget constraint satisfaction?
-        </a>
-      </li>
-    </ul>
-  </div>
+  <figure class="research-venn">
+    <svg viewBox="0 0 640 600" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="venn-title venn-description">
+      <title id="venn-title">Research areas and selected papers</title>
+      <desc id="venn-description">Three overlapping circles: Adaptation, Robust Safety, and Uncertainty Quantification. Each venue and year label links to a paper; hover on a label to see its full title.</desc>
 
-  <!-- CATEGORY 2 -->
-  <div class="research-category">
-    <h3>Adaptive Control</h3>
-    <ul>
-      <li>
-        <a href="https://arxiv.org/pdf/2510.07507" target="_blank" class="paper-link">
-          How to control an nonlinear, underactuated system with uncertainties in control effectiveness?
-        </a>
-      </li>
-    </ul>
-  </div>
+      <circle class="venn-circle venn-autonomy" cx="225" cy="225" r="180" />
+      <circle class="venn-circle venn-safety" cx="415" cy="225" r="180" />
+      <circle class="venn-circle venn-uncertainty" cx="320" cy="375" r="180" />
+
+      <g class="venn-area-label" text-anchor="middle">
+        <text x="155" y="26">Adaptation</text>
+        <text x="485" y="26">Robust Safety</text>
+        <text x="320" y="589">Uncertainty Quantification</text>
+      </g>
+
+      {% for paper in site.data.publications %}
+        {% assign thumbnail_width = 100 %}
+        {% assign thumbnail_height = 64 %}
+        {% assign thumbnail_x = -50 %}
+        {% assign thumbnail_y = -99 %}
+        {% case paper.title %}
+          {% when 'Adaptive Control Allocation for Underactuated Time-Scale Separated Non-Affine Systems' %}
+            {% assign marker_x = 150 %}
+            {% assign marker_y = 205 %}
+            {% assign marker_venue = 'ACC' %}
+            {% assign marker_region = 'Adaptation' %}
+          {% when 'Autonomy Architectures for Safe Planning in Unknown Environments Under Budget Constraints' %}
+            {% assign marker_x = 320 %}
+            {% assign marker_y = 180 %}
+            {% assign thumbnail_width = 80 %}
+            {% assign thumbnail_height = 44 %}
+            {% assign thumbnail_x = -40 %}
+            {% assign thumbnail_y = -74 %}
+            {% assign marker_venue = 'ACC' %}
+            {% assign marker_region = 'Adaptive Autonomy and Robust Safety' %}
+          {% when 'Distributionally Robust Safety Under Arbitrary Uncertainties: A Safety Filtering Approach' %}
+            {% assign marker_x = 485 %}
+            {% assign marker_y = 160 %}
+            {% assign thumbnail_width = 80 %}
+            {% assign thumbnail_height = 44 %}
+            {% assign thumbnail_x = -40 %}
+            {% assign thumbnail_y = -74 %}
+            {% assign marker_venue = 'RA-L' %}
+            {% assign marker_region = 'Robust Safety' %}
+          {% when 'Staggered Integral Online Conformal Prediction for Safe Dynamics Adaptation with Multi-Step Coverage Guarantees' %}
+            {% assign marker_x = 320 %}
+            {% assign marker_y = 305 %}
+            {% assign marker_venue = 'CDC' %}
+            {% assign marker_region = 'Safe Adaptive Autonomy: all three research areas' %}
+          {% when 'Stochastic Multi-Objective Kinodynamic Planning Against Adversaries' %}
+            {% assign marker_x = 528 %}
+            {% assign marker_y = 260 %}
+            {% assign thumbnail_width = 80 %}
+            {% assign thumbnail_height = 44 %}
+            {% assign thumbnail_x = -40 %}
+            {% assign thumbnail_y = -74 %}
+            {% assign marker_venue = 'CDC' %}
+            {% assign marker_region = 'Robust Safety' %}
+          {% else %}
+            {% continue %}
+        {% endcase %}
+        {% if paper.links.pdf %}
+          <a class="venn-paper" href="{{ paper.links.pdf | escape }}" target="_blank" rel="noopener noreferrer" aria-label="{{ paper.title | escape }} — {{ marker_region }} (opens in a new tab)">
+            <title>{{ paper.title | escape }}</title>
+            <g transform="translate({{ marker_x }}, {{ marker_y }})">
+              {% if paper.image and paper.image != '' %}
+                <rect class="venn-hit-area" x="-62" y="{{ thumbnail_y }}" width="124" height="{{ thumbnail_y | times: -1 | plus: 25 }}" rx="8" />
+                <rect class="venn-thumbnail-frame" x="{{ thumbnail_x }}" y="{{ thumbnail_y }}" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" rx="4" />
+                <image href="{{ paper.image | relative_url | escape }}" x="{{ thumbnail_x }}" y="{{ thumbnail_y }}" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" />
+              {% else %}
+                <rect class="venn-hit-area" x="-62" y="-28" width="124" height="56" rx="8" />
+              {% endif %}
+              <rect class="venn-paper-pill" x="-52" y="-22" width="104" height="44" rx="8" />
+              <text text-anchor="middle" y="8">{{ marker_venue }} {{ paper.year | modulo: 100 }}</text>
+            </g>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </svg>
+  </figure>
+
+  {% comment %}
+  {% assign research_areas = 'Adaptive Autonomy|Robust Safety|Uncertainty Quantification' | split: '|' %}
+  {% for area in research_areas %}
+    <section class="research-category" aria-labelledby="research-area-{{ forloop.index }}">
+      <h3 id="research-area-{{ forloop.index }}">{{ area }}</h3>
+      <ul>
+        {% for paper in site.data.publications %}
+          {% if paper.research_areas contains area %}
+            <li>
+              <a href="{{ paper.links.pdf | escape }}" target="_blank" rel="noopener noreferrer" class="paper-link">{{ paper.title | escape }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+  {% endcomment %}
+
+</div>
 
 <style>
+.research-venn {
+  width: min(600px, calc(100vw - 64px));
+  max-width: 600px;
+  margin: 1.5rem auto 2.5rem;
+}
+
+.research-venn svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+}
+
+.venn-circle {
+  stroke-width: 1.5;
+}
+
+.venn-autonomy {
+  fill: #007acc;
+  fill-opacity: 0.07;
+  stroke: #739bb8;
+}
+
+.venn-safety {
+  fill: #64748b;
+  fill-opacity: 0.07;
+  stroke: #8a96a6;
+}
+
+.venn-uncertainty {
+  fill: #288779;
+  fill-opacity: 0.07;
+  stroke: #79a79f;
+}
+
+.venn-area-label {
+  fill: #333;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.venn-paper {
+  fill: #0645ad;
+  font-size: 26px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.venn-hit-area {
+  fill: transparent;
+}
+
+.venn-thumbnail-frame {
+  fill: #fff;
+  stroke: #c5ced6;
+  stroke-width: 1;
+}
+
+.venn-paper-pill {
+  fill: #fff;
+  stroke: #c5ced6;
+  stroke-width: 1.5;
+}
+
+.venn-paper:hover .venn-paper-pill,
+.venn-paper:focus .venn-paper-pill {
+  fill: #dbeeff;
+  stroke: #007acc;
+  stroke-width: 3;
+}
+
+.venn-paper:hover text,
+.venn-paper:focus text {
+  text-decoration: underline;
+}
+
+.research-venn figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #444;
+}
+
 .content-wrap {
   max-width: 850px;
   margin: 2rem auto;
@@ -166,6 +327,7 @@ title: Research
 (function(){
   const hero = document.getElementById('hero');
   const track = document.getElementById('hero-track');
+  if (!hero || !track) return;
   const slides = Array.from(track.children);
   const prev = document.querySelector('.hero-nav.prev');
   const next = document.querySelector('.hero-nav.next');

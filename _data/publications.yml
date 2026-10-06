@@ -1,22 +1,61 @@
-- year: 2025
-  title: "Adaptive Control Allocation for Underactuated Time-Scale Separated Non-Affine Systems"
+- year: 2026
+  title: "Staggered Integral Online Conformal Prediction for Safe Dynamics Adaptation with Multi-Step Coverage Guarantees"
+  research_areas: ["Adaptive Autonomy", "Robust Safety", "Uncertainty Quantification"]
   category: conferences
-  image: "/pics/vtol_animation.gif"
-  venue: 'submitted and under review' # IEEE Control Systems Letters (L-CSS)
+  image: "pics/siocp.gif" # TODO: add image/gif to /pics/
+  venue: "2026 IEEE Conference on Decision and Control (CDC)"
   authors: "<strong>Daniel M. Cherenson</strong> and Dimitra Panagou"
   first_coauthors: false
   links:
-    pdf: 'https://arxiv.org/pdf/2510.07507'
-    code: 'https://github.com/dcherenson/adaptive-control-underactuated'
+    pdf: "https://arxiv.org/pdf/2604.06058"
+    code: "https://github.com/dcherenson/staggered-integral-ocp"
 
-- year: 2025
+- year: 2026
+  title: "Stochastic Multi-Objective Kinodynamic Planning Against Adversaries"
+  research_areas: ["Robust Safety"]
+  category: conferences
+  image: "pics/smo-sst.gif"
+  venue: "2026 IEEE Conference on Decision and Control (CDC)"
+  authors: "Thomas Marshall Vielmetti, <strong>Daniel Cherenson</strong>, Dimitra Panagou"
+  first_coauthors: false
+  links:
+    pdf: "https://arxiv.org/pdf/2607.19284"
+    code: "https://github.com/MarshallVielmetti/Multi_Objective_Planning_Stochastic_Environments"
+
+- year: 2026
+  title: "Distributionally Robust Safety Under Arbitrary Uncertainties: A Safety Filtering Approach"
+  research_areas: ["Robust Safety"]
+  category: journals
+  image: "pics/sgk.gif"
+  venue: "IEEE Robotics and Automation Letters (RA-L), 2026"
+  authors: "<strong>Daniel M. Cherenson*</strong>, Haejoon Lee*, Taekyung Kim, and Dimitra Panagou"
+  first_coauthors: true
+  links:
+    pdf: "https://ieeexplore.ieee.org/document/11704677"
+    code: "https://github.com/dcherenson/drs-gk"
+    web_demo: "https://backupsf.taekyung.me/#drs"
+
+- year: 2026
+  title: "Adaptive Control Allocation for Underactuated Time-Scale Separated Non-Affine Systems"
+  research_areas: ["Adaptive Autonomy"]
+  category: conferences
+  image: "/pics/vtol_animation.gif"
+  venue: "2026 American Control Conference (ACC)"
+  authors: "<strong>Daniel M. Cherenson</strong> and Dimitra Panagou"
+  first_coauthors: false
+  links:
+    pdf: "https://ieeexplore.ieee.org/document/11615853"
+    code: "https://github.com/dcherenson/adaptive-control-underactuated"
+    web_demo: "https://vtol.taekyung.me/"
+
+- year: 2026
   title: "Autonomy Architectures for Safe Planning in Unknown Environments Under Budget Constraints"
+  research_areas: ["Adaptive Autonomy", "Robust Safety"]
   category: conferences
   image: "/pics/budget.gif"
-  venue: "submitted and under review"
+  venue: "2026 American Control Conference (ACC)"
   authors: "<strong>Daniel M. Cherenson</strong>, Devansh R. Agrawal, and Dimitra Panagou"
   first_coauthors: false
   links:
-    pdf: "https://arxiv.org/pdf/2510.07507"
+    pdf: "https://ieeexplore.ieee.org/abstract/document/11615375"
     code: "https://github.com/dcherenson/budget-constrained-planning"
-

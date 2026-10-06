@@ -11,7 +11,7 @@ title: Publications
   <!-- Conferences Section -->
   {% assign conf_pubs = pubs | where: "category", "conferences" %}
   {% if conf_pubs.size > 0 %}
-    <h2>Conferences</h2>
+    <h2>Peer-Reviewed Conference Papers</h2>
     {% assign conf_years = conf_pubs | map: "year" | uniq | sort | reverse %}
     {% for y in conf_years %}
       <h3>{{ y }}</h3>
@@ -31,8 +31,9 @@ title: Publications
               {% endif %}
               <div class="pub-venue"><em>{{ pub.venue }}</em></div>
               <div class="pub-links">
-                {% if pub.links.pdf %}<a class="pub-btn" href="{{ pub.links.pdf }}" target="_blank">📄</a>{% endif %}
-                {% if pub.links.code %}<a class="pub-btn" href="{{ pub.links.code }}" target="_blank">💻</a>{% endif %}
+                {% if pub.links.pdf %}<a class="pub-btn" href="{{ pub.links.pdf }}" target="_blank">📄 Paper</a>{% endif %}
+                {% if pub.links.code %}<a class="pub-btn" href="{{ pub.links.code }}" target="_blank">💻 Code</a>{% endif %}
+                {% if pub.links.web_demo %}<a class="pub-btn" href="{{ pub.links.web_demo }}" target="_blank">🌐 Web Demo</a>{% endif %}
               </div>
             </div>
           </div>
@@ -64,8 +65,9 @@ title: Publications
               {% endif %}
               <div class="pub-venue"><em>{{ pub.venue }}</em></div>
               <div class="pub-links">
-                {% if pub.links.pdf %}<a class="pub-btn" href="{{ pub.links.pdf }}" target="_blank">📄</a>{% endif %}
-                {% if pub.links.code %}<a class="pub-btn" href="{{ pub.links.code }}" target="_blank">💻</a>{% endif %}
+                {% if pub.links.pdf %}<a class="pub-btn" href="{{ pub.links.pdf }}" target="_blank">📄 Paper</a>{% endif %}
+                {% if pub.links.code %}<a class="pub-btn" href="{{ pub.links.code }}" target="_blank">💻 Code</a>{% endif %}
+                {% if pub.links.web_demo %}<a class="pub-btn" href="{{ pub.links.web_demo }}" target="_blank">🌐 Web Demo</a>{% endif %}
               </div>
             </div>
           </div>
