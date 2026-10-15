@@ -15,16 +15,36 @@ tests and builds the demo, builds the Jekyll website, and copies the packaged
 demo into the website artifact. No generated demo files are committed here.
 Pull requests build and validate the artifact without deploying it.
 
-Scheduled runs check the demo's `main` branch every 15 minutes. A published
-`deployment.json` records the two source revisions so unchanged scheduled runs
-skip the build and deployment. Updates go live after the next scheduled run
-and successful build; GitHub can delay scheduled runs. No additional token or
-repository secret is required. The existing `/reroot-demo/` project site can
-continue to run independently.
+Every push to `reroot-demo/main` runs that repository's **Deploy research
+website** workflow, which dispatches this repository's Pages workflow. Each
+website run resolves the latest demo commit on `main`, tests it, and publishes
+the combined site. A published `deployment.json` records both source revisions.
+The existing `/reroot-demo/` project site continues to deploy independently.
 
-GitHub disables scheduled workflows in public repositories after 60 days with
-no repository activity. If this happens, re-enable the workflow in Actions.
-See [GitHub's schedule documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+There is no scheduled polling, so GitHub's 60-day inactivity rule for scheduled
+workflows does not apply. Workflow queueing and build time still apply.
+
+### One-time cross-repository authorization
+
+GitHub's built-in `GITHUB_TOKEN` is restricted to the repository running the
+workflow. The demo workflow therefore needs a credential for this repository:
+
+1. Create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+   owned by `dcherenson`. Under **Only select repositories**, select only
+   `dcherenson.github.io`. Grant **Repository permissions → Actions → Read and
+   write**; leave other permissions unchanged (Metadata read is automatic).
+2. Choose an expiration appropriate for this automation. **No expiration**, if
+   available, avoids renewal dates; otherwise replace the secret before expiry.
+3. In [reroot-demo's Actions secrets](https://github.com/dcherenson/reroot-demo/settings/secrets/actions),
+   add a **repository secret** named `WEBSITE_DEPLOY_TOKEN` with that token.
+   Store it directly in GitHub, never in source files or chat.
+4. Push to `reroot-demo/main`, or manually run **Deploy research website** on
+   `main`. Confirm that **Deploy website and ReRoot demo** starts here.
+
+The token needs access to the website repository, while the secret is stored
+in the demo repository. Missing, expired, or revoked credentials cause the
+dispatch workflow to fail visibly. After replacing the secret, rerun the
+failed job. See [GitHub's workflow-dispatch permissions](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event).
 
 ## Validation
 

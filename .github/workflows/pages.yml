@@ -5,9 +5,6 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
-  schedule:
-    # Poll the separate demo repository without a cross-repository secret.
-    - cron: '7,22,37,52 * * * *'
 
 permissions:
   contents: read
@@ -17,34 +14,22 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  changes:
+  resolve-demo:
     runs-on: ubuntu-latest
     outputs:
-      needed: ${{ steps.check.outputs.needed }}
       demo-sha: ${{ steps.check.outputs.demo-sha }}
     steps:
-      - name: Check demo revision and deployed versions
+      - name: Resolve latest demo revision
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
-          EVENT_NAME: ${{ github.event_name }}
         run: |
+          # Resolve main when this run starts so delayed triggers cannot roll back the demo.
           demo_sha=$(gh api repos/dcherenson/reroot-demo/commits/main --jq .sha)
           echo "demo-sha=$demo_sha" >> "$GITHUB_OUTPUT"
-          needed=true
-          if [ "$EVENT_NAME" = schedule ]; then
-            deployed=$(curl --fail --silent --show-error --retry 2 --max-time 20 \
-              "https://dcherenson.github.io/deployment.json?run=$GITHUB_RUN_ID") || deployed='{}'
-            if jq -e --arg website "$GITHUB_SHA" --arg demo "$demo_sha" \
-              '.website == $website and .demo == $demo' <<< "$deployed" > /dev/null; then
-              needed=false
-            fi
-          fi
-          echo "needed=$needed" >> "$GITHUB_OUTPUT"
 
   build:
-    needs: changes
-    if: needs.changes.outputs.needed == 'true'
+    needs: resolve-demo
     runs-on: ubuntu-latest
     steps:
       - name: Check out website
@@ -56,7 +41,7 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           repository: dcherenson/reroot-demo
-          ref: ${{ needs.changes.outputs.demo-sha }}
+          ref: ${{ needs.resolve-demo.outputs.demo-sha }}
           path: reroot
           persist-credentials: false
       - name: Set up Node
@@ -78,7 +63,7 @@ jobs:
           destination: ./_site
       - name: Assemble website and demo
         env:
-          DEMO_SHA: ${{ needs.changes.outputs.demo-sha }}
+          DEMO_SHA: ${{ needs.resolve-demo.outputs.demo-sha }}
         run: |
           # Jekyll's container owns _site; assemble into a runner-owned directory.
           mkdir -p public
