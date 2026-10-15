@@ -1,0 +1,112 @@
+name: Deploy website and ReRoot demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Poll the separate demo repository without a cross-repository secret.
+    - cron: '7,22,37,52 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.check.outputs.needed }}
+      demo-sha: ${{ steps.check.outputs.demo-sha }}
+    steps:
+      - name: Check demo revision and deployed versions
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          demo_sha=$(gh api repos/dcherenson/reroot-demo/commits/main --jq .sha)
+          echo "demo-sha=$demo_sha" >> "$GITHUB_OUTPUT"
+          needed=true
+          if [ "$EVENT_NAME" = schedule ]; then
+            deployed=$(curl --fail --silent --show-error --retry 2 --max-time 20 \
+              "https://dcherenson.github.io/deployment.json?run=$GITHUB_RUN_ID") || deployed='{}'
+            if jq -e --arg website "$GITHUB_SHA" --arg demo "$demo_sha" \
+              '.website == $website and .demo == $demo' <<< "$deployed" > /dev/null; then
+              needed=false
+            fi
+          fi
+          echo "needed=$needed" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: changes
+    if: needs.changes.outputs.needed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          path: website
+          persist-credentials: false
+      - name: Check out ReRoot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: dcherenson/reroot-demo
+          ref: ${{ needs.changes.outputs.demo-sha }}
+          path: reroot
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: reroot/package-lock.json
+      - name: Test and build ReRoot
+        working-directory: reroot
+        run: |
+          npm ci --ignore-scripts
+          npm test
+          npm run build
+      - name: Build website with Jekyll
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1
+        with:
+          source: ./website
+          destination: ./_site
+      - name: Assemble website and demo
+        env:
+          DEMO_SHA: ${{ needs.changes.outputs.demo-sha }}
+        run: |
+          # Jekyll's container owns _site; assemble into a runner-owned directory.
+          mkdir -p public
+          cp -R _site/. public/
+          mkdir -p public/demos/reroot
+          cp -R reroot/_site/. public/demos/reroot/
+          jq -n --arg website "$GITHUB_SHA" --arg demo "$DEMO_SHA" \
+            '{website: $website, demo: $demo}' > public/deployment.json
+      - name: Verify published routes and assets
+        run: python3 website/scripts/verify-site.py public
+      - name: Upload website
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

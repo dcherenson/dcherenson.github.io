@@ -4,4 +4,9 @@ baseurl: ""
 url: "https://dcherenson.github.io"
 markdown: kramdown
 theme: null
+plugins:
+  - jekyll-redirect-from
+exclude:
+  - README.md
+  - scripts
 

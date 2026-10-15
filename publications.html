@@ -1,6 +1,9 @@
 ---
 layout: default
 title: Publications
+permalink: /publications/
+redirect_from:
+  - /publications.html
 ---
 
 <main class="container">
@@ -19,7 +22,7 @@ title: Publications
         {% if pub.year == y %}
           <div class="pub-entry">
             <div class="pub-image">
-              <img src="{{ pub.image }}" alt="Thumbnail for {{ pub.title }}">
+              <img src="{{ pub.image | relative_url | escape }}" alt="Thumbnail for {{ pub.title }}">
             </div>
             <div class="pub-text">
               <div class="pub-title">{{ pub.title }}</div>
@@ -53,7 +56,7 @@ title: Publications
         {% if pub.year == y %}
           <div class="pub-entry">
             <div class="pub-image">
-              <img src="{{ pub.image }}" alt="Thumbnail for {{ pub.title }}">
+              <img src="{{ pub.image | relative_url | escape }}" alt="Thumbnail for {{ pub.title }}">
             </div>
             <div class="pub-text">
               <div class="pub-title">{{ pub.title }}</div>
