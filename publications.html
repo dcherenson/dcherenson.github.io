@@ -78,4 +78,31 @@ redirect_from:
       {% endfor %}
     {% endfor %}
   {% endif %}
+  {% assign review_pubs = pubs | where: "status", "under_review" %}
+  {% if review_pubs.size > 0 %}
+    <h2>Under Review</h2>
+    {% assign review_years = review_pubs | map: "year" | uniq | sort | reverse %}
+    {% for y in review_years %}
+      <h3>{{ y }}</h3>
+      {% for pub in review_pubs %}
+        {% if pub.year == y %}
+          <div class="pub-entry">
+            {% if pub.image %}
+              <div class="pub-image">
+                <img src="{{ pub.image | relative_url | escape }}" alt="{{ pub.image_alt | default: pub.title | escape }}">
+              </div>
+            {% endif %}
+            <div class="pub-text">
+              <div class="pub-title">{{ pub.title | escape }}</div>
+              <div class="pub-authors">{{ pub.authors }}</div>
+              <div class="pub-links">
+                <a class="pub-btn" href="{{ pub.links.pdf | escape }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>
+                {% if pub.links.code %}<a class="pub-btn" href="{{ pub.links.code | escape }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
 </main>

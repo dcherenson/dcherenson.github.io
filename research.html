@@ -14,7 +14,7 @@ redirect_from:
   <figure class="research-venn">
     <svg viewBox="0 0 640 600" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="venn-title venn-description">
       <title id="venn-title">Research areas and selected papers</title>
-      <desc id="venn-description">Three overlapping circles: Adaptation, Robust Safety, and Uncertainty Quantification. Each venue and year label links to a paper; hover on a label to see its full title.</desc>
+      <desc id="venn-description">Three overlapping circles: Adaptation, Robust Safety, and Uncertainty Quantification. Each paper label links to a paper; hover on a label to see its full title.</desc>
 
       <circle class="venn-circle venn-autonomy" cx="225" cy="225" r="180" />
       <circle class="venn-circle venn-safety" cx="415" cy="225" r="180" />
@@ -32,6 +32,11 @@ redirect_from:
         {% assign thumbnail_x = -50 %}
         {% assign thumbnail_y = -99 %}
         {% case paper.title %}
+          {% when 'Distributed Interactive Conformal Prediction for Multi-Agent Systems' %}
+            {% assign marker_x = 320 %}
+            {% assign marker_y = 505 %}
+            {% assign marker_venue = 'UR' %}
+            {% assign marker_region = 'Uncertainty Quantification' %}
           {% when 'Adaptive Control Allocation for Underactuated Time-Scale Separated Non-Affine Systems' %}
             {% assign marker_x = 150 %}
             {% assign marker_y = 205 %}
@@ -90,6 +95,15 @@ redirect_from:
         {% endif %}
       {% endfor %}
     </svg>
+    <figcaption>
+      <strong>Legend</strong>
+      <dl>
+        <dt>ACC</dt><dd>American Control Conference</dd>
+        <dt>CDC</dt><dd>IEEE Conference on Decision and Control</dd>
+        <dt>RA-L</dt><dd>IEEE Robotics and Automation Letters</dd>
+        <dt>UR</dt><dd>Under Review</dd>
+      </dl>
+    </figcaption>
   </figure>
 
   {% comment %}
@@ -114,8 +128,11 @@ redirect_from:
 
 <style>
 .research-venn {
-  width: min(600px, calc(100vw - 64px));
-  max-width: 600px;
+  display: grid;
+  grid-template-columns: minmax(0, 600px) minmax(180px, 240px);
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 864px;
   margin: 1.5rem auto 2.5rem;
 }
 
@@ -191,10 +208,29 @@ redirect_from:
 }
 
 .research-venn figcaption {
-  margin-top: 0.75rem;
-  text-align: center;
+  align-self: end;
+  justify-self: end;
+  line-height: 1.4;
   font-size: 0.95rem;
   color: #444;
+}
+
+.research-venn dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.6rem 0.75rem;
+  margin: 0.75rem 0 0;
+}
+
+.research-venn dt { font-weight: 600; }
+.research-venn dd { margin: 0; }
+
+@media (max-width: 700px) {
+  .research-venn {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 600px;
+  }
+  .research-venn figcaption { max-width: 18rem; }
 }
 
 .content-wrap {

@@ -1,4 +1,17 @@
 - year: 2026
+  title: "Distributed Interactive Conformal Prediction for Multi-Agent Systems"
+  research_areas: ["Uncertainty Quantification"]
+  category: preprints
+  status: under_review
+  image: "pics/maicp-tracking.gif"
+  image_alt: "Robots tracking a moving target with camera and LiDAR sensors"
+  venue: "Preprint"
+  authors: "<strong>Daniel M. Cherenson</strong> and Dimitra Panagou"
+  links:
+    pdf: "https://arxiv.org/abs/2611.29037"
+    code: "https://github.com/dcherenson/maicp"
+
+- year: 2026
   title: "Staggered Integral Online Conformal Prediction for Safe Dynamics Adaptation with Multi-Step Coverage Guarantees"
   research_areas: ["Adaptive Autonomy", "Robust Safety", "Uncertainty Quantification"]
   category: conferences
